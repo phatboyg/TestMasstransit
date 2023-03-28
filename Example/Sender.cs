@@ -33,7 +33,7 @@ namespace Example
             {
                 await Publish();
 
-                await Task.Delay(30, stoppingToken);
+                await Task.Delay(30000, stoppingToken);
             }
         }
 

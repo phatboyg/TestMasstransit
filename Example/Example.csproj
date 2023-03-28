@@ -1,19 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../../../Code/MassTransit/src/Transports/MassTransit.RabbitMqTransport/MassTransit.RabbitMqTransport.csproj" />
     <ProjectReference Include="../../../Code/MassTransit/src/MassTransit/MassTransit.csproj" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.1.18" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.18" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.18" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.18" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.1.18" />
+    <ProjectReference Include="../../../Code/MassTransit/src/MassTransit.Abstractions/MassTransit.Abstractions.csproj" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
   </ItemGroup>
 </Project>

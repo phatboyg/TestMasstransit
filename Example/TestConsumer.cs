@@ -16,7 +16,7 @@ namespace Example
             _logger = loggerFactory.CreateLogger("Consumed");
         }
 
-        public Task Consume(ConsumeContext<TestMessage> context)
+        public async Task Consume(ConsumeContext<TestMessage> context)
         {
             var consumeCounter = Counter.IncrementConsume();
             Counter._counterList.Add(context.Message.Counter);
@@ -42,13 +42,18 @@ namespace Example
                 {
                     Console.WriteLine($"{DateTime.Now} [{consumeCounter}] Consume : {context.Message}");
                 }
+
+                await Task.Delay(2 * 60 * 1000, context.ReceiveContext.CancellationToken);
+            }
+            catch (OperationCanceledException e)
+            {
+                _logger.LogError(e, "{Timestamp} Consume Operation Canceled ", DateTime.Now);
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "{Timestamp} Consume Exception ", DateTime.Now);
             }
 
-            return Task.CompletedTask;
         }
     }
 }
