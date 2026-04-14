@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using MassTransit;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -10,46 +11,46 @@ namespace Example
 {
     public class Sender : BackgroundService
     {
+        static Timer _timer;
         readonly IBusControl _bus;
+        readonly IServiceScopeFactory _factory;
 
         readonly ILogger _logger;
 
-        private static Timer _timer;
+        List<Exception> _exceptionList = new List<Exception>();
+        Exception _lastException;
 
-        private List<Exception> _exceptionList = new List<Exception>();
-        private Exception _lastException;
-
-        public Sender(ILoggerFactory loggerFactory, IBusControl bus)
+        public Sender(ILoggerFactory loggerFactory, IBusControl bus, IServiceScopeFactory factory)
         {
             _logger = loggerFactory.CreateLogger("Publishd");
             _bus = bus;
+            _factory = factory;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            await WaitForHealthyBus(stoppingToken);
+            await _bus.WaitForHealthStatus(BusHealthStatus.Healthy, stoppingToken);
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                await Publish();
+                await using var scope = _factory.CreateAsyncScope();
 
-                await Task.Delay(30000, stoppingToken);
+                var bus = scope.ServiceProvider.GetRequiredService<IScopedBus>();
+
+                await Publish(bus);
+
+                await Task.Delay(3000, stoppingToken);
+                
+                var health = _bus.CheckHealth();
+                if(health.Status !=  BusHealthStatus.Healthy)
+                {
+                    Console.WriteLine("The bus health is:  " + health.Status);
+                }
             }
         }
 
 
-        async Task WaitForHealthyBus(CancellationToken cancellationToken)
-        {
-            BusHealthResult result;
-            do
-            {
-                result = _bus.CheckHealth();
-
-                await Task.Delay(100, cancellationToken);
-            } while (result.Status != BusHealthStatus.Healthy);
-        }
-
-        async Task Publish()
+        async Task Publish(IScopedBus bus)
         {
             var count = Counter.IncrementPublish();
 
@@ -60,8 +61,8 @@ namespace Example
             };
             try
             {
-                await _bus.Publish(message);
-                Console.WriteLine($"{DateTime.Now} [{count}] Publish : " + message.ToString());
+                await bus.Publish(message);
+                Console.WriteLine($"{DateTime.Now} [{count}] Publish : " + message);
             }
             catch (Exception e)
             {

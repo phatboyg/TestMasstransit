@@ -49,14 +49,27 @@ namespace Example
                             h.Password("admin");
                         });
 
-                        cfg.Message<TestMessage>(c => c.SetEntityName("test"));
-                        EndpointConvention.Map<TestMessage>(new Uri("rabbitmq://localhost/%2F/test"));
+                        cfg.SetQuorumQueue(3);
 
-                        cfg.ReceiveEndpoint("test", configurator =>
+                        cfg.ReceiveEndpoint("test", e =>
                         {
-                            configurator.PrefetchCount = 1;
-                            configurator.ConfigureConsumer<TestConsumer>(context);
+                            e.PrefetchCount = 1;
+                            e.SingleActiveConsumer = true;
+
+                            e.SetQuorumQueue(3);
+
+                            e.ConfigureConsumer<TestConsumer>(context);
                         });
+
+                        for (int i = 0; i < 32; i++)
+                        {
+                            cfg.ReceiveEndpoint($"unused-{i}", e =>
+                            {
+                                e.SingleActiveConsumer = true;
+
+                                e.SetQuorumQueue(3);
+                            });
+                        }
                     }
                 );
             });

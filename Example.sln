@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassTransit", "..\..\Code\M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassTransit.RabbitMqTransport", "..\..\Code\MassTransit\src\Transports\MassTransit.RabbitMqTransport\MassTransit.RabbitMqTransport.csproj", "{2FD6912B-8F3D-478B-B9D6-A21A60E25D4F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassTransit.Abstractions", "..\..\Code\MassTransit\src\MassTransit.Abstractions\MassTransit.Abstractions.csproj", "{5C34F21B-8C0E-4ED9-B8AE-8A8935AB7BD3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{D47D0A52-3AC5-4F10-9BCF-51EBFEA85ECA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FD6912B-8F3D-478B-B9D6-A21A60E25D4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2FD6912B-8F3D-478B-B9D6-A21A60E25D4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C34F21B-8C0E-4ED9-B8AE-8A8935AB7BD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C34F21B-8C0E-4ED9-B8AE-8A8935AB7BD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C34F21B-8C0E-4ED9-B8AE-8A8935AB7BD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C34F21B-8C0E-4ED9-B8AE-8A8935AB7BD3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
