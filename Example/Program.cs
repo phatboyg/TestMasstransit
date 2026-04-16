@@ -49,14 +49,14 @@ namespace Example
                             h.Password("admin");
                         });
 
-                        cfg.SetQuorumQueue(3);
+                        cfg.SetQuorumQueue(5);
 
                         cfg.ReceiveEndpoint("test", e =>
                         {
                             e.PrefetchCount = 1;
                             e.SingleActiveConsumer = true;
 
-                            e.SetQuorumQueue(3);
+                            e.SetQuorumQueue(5);
 
                             e.ConfigureConsumer<TestConsumer>(context);
                         });
@@ -67,7 +67,7 @@ namespace Example
                             {
                                 e.SingleActiveConsumer = true;
 
-                                e.SetQuorumQueue(3);
+                                e.SetQuorumQueue(5);
                             });
                         }
                     }
