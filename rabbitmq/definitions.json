@@ -37,7 +37,19 @@
         }
     ],
     "policies":
-    [],
+    [
+        {
+            "vhost": "/",
+            "name": "quorum-target-group-size",
+            "pattern": ".*",
+            "apply-to": "quorum_queues",
+            "definition":
+            {
+                "target-group-size": 5
+            },
+            "priority": 0
+        }
+    ],
     "queues":
     []
 }

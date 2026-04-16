@@ -10,10 +10,14 @@ WAIT_TIMEOUT_SECONDS="${WAIT_TIMEOUT_SECONDS:-60}"
 RABBITMQ1_NAME="rabbitmq1"
 RABBITMQ2_NAME="rabbitmq2"
 RABBITMQ3_NAME="rabbitmq3"
+RABBITMQ4_NAME="rabbitmq4"
+RABBITMQ5_NAME="rabbitmq5"
 
 RABBITMQ1_API="http://${DOCKER_ADDRESS}:15673/api/overview"
 RABBITMQ2_API="http://${DOCKER_ADDRESS}:15674/api/overview"
 RABBITMQ3_API="http://${DOCKER_ADDRESS}:15675/api/overview"
+RABBITMQ4_API="http://${DOCKER_ADDRESS}:15676/api/overview"
+RABBITMQ5_API="http://${DOCKER_ADDRESS}:15677/api/overview"
 
 timestamp() {
   date +"%Y-%m-%d %H:%M:%S"
@@ -67,6 +71,8 @@ wait_for_all_nodes() {
   wait_for_management_api "$RABBITMQ1_NAME" "$RABBITMQ1_API"
   wait_for_management_api "$RABBITMQ2_NAME" "$RABBITMQ2_API"
   wait_for_management_api "$RABBITMQ3_NAME" "$RABBITMQ3_API"
+  wait_for_management_api "$RABBITMQ4_NAME" "$RABBITMQ4_API"
+  wait_for_management_api "$RABBITMQ5_NAME" "$RABBITMQ5_API"
 }
 
 cluster_node() {
@@ -121,11 +127,15 @@ main() {
 
   cluster_node "$RABBITMQ2_NAME" "$RABBITMQ1_NAME"
   cluster_node "$RABBITMQ3_NAME" "$RABBITMQ1_NAME"
+  cluster_node "$RABBITMQ4_NAME" "$RABBITMQ1_NAME"
+  cluster_node "$RABBITMQ5_NAME" "$RABBITMQ1_NAME"
 
   verify_cluster_membership \
     "$RABBITMQ1_NAME" \
     "$RABBITMQ2_NAME" \
-    "$RABBITMQ3_NAME"
+    "$RABBITMQ3_NAME" \
+    "$RABBITMQ4_NAME" \
+    "$RABBITMQ5_NAME"
 
   show_overview
 

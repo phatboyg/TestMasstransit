@@ -9,13 +9,15 @@ services:
             - rabbitmq1
             - rabbitmq2
             - rabbitmq3
+            - rabbitmq4
+            - rabbitmq5
         ports:
             - "1936:1936"
             - "5672:5672"
             - "15672:15672"
         environment:
             FRONTEND_PORT : 5672
-            BACKENDS: "rabbitmq1:5672 rabbitmq2:5672 rabbitmq3:5672"
+            BACKENDS: "rabbitmq1:5672 rabbitmq2:5672 rabbitmq3:5672 rabbitmq4:5672 rabbitmq5:5672"
             DNS_ENABLED: "true"
             LOG_LEVEL: "info"
 
@@ -57,3 +59,29 @@ services:
             RABBITMQ_DEFAULT_PASS: admin
         ports:
             - 15675:15672
+
+    rabbitmq4:
+        build:
+            context: ./rabbitmq
+            dockerfile: Dockerfile
+        container_name: rabbitmq4
+        hostname: rabbitmq4
+        environment:
+            RABBITMQ_ERLANG_COOKIE: cookie
+            RABBITMQ_DEFAULT_USER: admin
+            RABBITMQ_DEFAULT_PASS: admin
+        ports:
+            - 15676:15672
+
+    rabbitmq5:
+        build:
+            context: ./rabbitmq
+            dockerfile: Dockerfile
+        container_name: rabbitmq5
+        hostname: rabbitmq5
+        environment:
+            RABBITMQ_ERLANG_COOKIE: cookie
+            RABBITMQ_DEFAULT_USER: admin
+            RABBITMQ_DEFAULT_PASS: admin
+        ports:
+            - 15677:15672
