@@ -43,7 +43,7 @@ namespace Example
 
                 x.UsingRabbitMq((context, cfg) =>
                     {
-                        cfg.Host("localhost", 5672, "/", h =>
+                        cfg.Host("localhost", 6666, "/", h =>
                         {
                             h.Username("admin");
                             h.Password("admin");
